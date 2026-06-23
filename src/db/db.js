@@ -1,13 +1,14 @@
 // Capa de acceso a IndexedDB (sin dependencias externas).
 
 const DB_NAME = 'gestion-arriendos'
-const DB_VERSION = 1
+const DB_VERSION = 2
 
 export const STORES = {
   propiedades: 'propiedades',
   arrendatarios: 'arrendatarios',
   contratos: 'contratos',
   polizas: 'polizas',
+  compraventas: 'compraventas',
   ingresos: 'ingresos',
   gastos: 'gastos',
   pdfs: 'pdfs',

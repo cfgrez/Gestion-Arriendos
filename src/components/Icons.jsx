@@ -39,6 +39,13 @@ export const Icon = {
     </>,
   ),
   Shield: make(<path d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z" />),
+  Key: make(
+    <>
+      <circle cx="8" cy="15" r="4" />
+      <path d="M10.8 12.2 20 3" />
+      <path d="M17 6l2 2M14 9l2 2" />
+    </>,
+  ),
   Cash: make(
     <>
       <rect x="2" y="6" width="20" height="12" rx="2" />

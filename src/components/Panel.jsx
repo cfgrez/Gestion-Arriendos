@@ -87,7 +87,7 @@ export default function Panel({ ir }) {
           <h2><Icon.Bell width={18} height={18} /> Vencimientos próximos</h2>
           <div className="aviso-sel">
             <span>Avisar con</span>
-            {[30, 60, 90].map((d) => (
+            {[30, 60, 90, 180].map((d) => (
               <button
                 key={d}
                 className={'chip' + (avisoDias === d ? ' on' : '')}

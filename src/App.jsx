@@ -6,6 +6,7 @@ import Propiedades from './components/Propiedades'
 import Arrendatarios from './components/Arrendatarios'
 import Contratos from './components/Contratos'
 import Polizas from './components/Polizas'
+import Compraventas from './components/Compraventas'
 import Ingresos from './components/Ingresos'
 import Gastos from './components/Gastos'
 import Reportes from './components/Reportes'
@@ -17,6 +18,7 @@ const NAV = [
   { id: 'arrendatarios', label: 'Arrendatarios', icon: Icon.Users },
   { id: 'contratos', label: 'Contratos', icon: Icon.Doc },
   { id: 'polizas', label: 'Pólizas', icon: Icon.Shield },
+  { id: 'compraventas', label: 'Compraventas', icon: Icon.Key },
   { id: 'ingresos', label: 'Ingresos', icon: Icon.Cash },
   { id: 'gastos', label: 'Gastos', icon: Icon.Receipt },
   { id: 'reportes', label: 'Reportes', icon: Icon.Chart },
@@ -48,6 +50,7 @@ export default function App() {
     arrendatarios: <Arrendatarios />,
     contratos: <Contratos />,
     polizas: <Polizas />,
+    compraventas: <Compraventas />,
     ingresos: <Ingresos />,
     gastos: <Gastos />,
     reportes: <Reportes />,

@@ -7,7 +7,7 @@ import { nuevoId, fmtCLP, fmtUF, fmtFecha, diasEntre, hoyISO } from '../utils/he
 const vacio = {
   arrendatarioId: '', rolesIds: [], inicio: '', termino: '',
   monto: '', moneda: 'CLP', diaPago: 5, reajuste: 'Anual IPC',
-  garantia: '', estado: 'vigente', notas: '',
+  garantia: '', garantiaMoneda: 'UF', estado: 'vigente', notas: '',
   contratoPdfId: null, contratoPdfNombre: '', anexos: [],
 }
 
@@ -163,7 +163,9 @@ export default function Contratos() {
                 <span>Vigencia: {fmtFecha(c.inicio)} → {c.termino ? fmtFecha(c.termino) : 'indefinido'}</span>
                 <span>Día de pago: {c.diaPago}</span>
                 {c.reajuste && <span>Reajuste: {c.reajuste}</span>}
-                {c.garantia > 0 && <span>Garantía: {fmtCLP(c.garantia)}</span>}
+                {c.garantia > 0 && (
+                  <span>Garantía: {c.garantiaMoneda === 'UF' ? fmtUF(c.garantia) : fmtCLP(c.garantia)}</span>
+                )}
               </div>
 
               <div className="card-foot">
@@ -180,7 +182,7 @@ export default function Contratos() {
                   ))}
                 </div>
                 <div className="actions">
-                  <button className="icon-btn" onClick={() => setModal({ ...c, anexos: c.anexos || [] })} title="Editar">
+                  <button className="icon-btn" onClick={() => setModal({ ...c, garantiaMoneda: c.garantiaMoneda || 'CLP', anexos: c.anexos || [] })} title="Editar">
                     <Icon.Edit />
                   </button>
                   <button className="icon-btn danger" onClick={() => setBorrar(c)} title="Eliminar">
@@ -268,8 +270,14 @@ export default function Contratos() {
             <Field label="Reajuste">
               <input value={modal.reajuste} onChange={set('reajuste')} placeholder="Anual IPC" />
             </Field>
-            <Field label="Garantía (CLP)">
-              <input type="number" value={modal.garantia} onChange={set('garantia')} />
+            <Field label="Moneda garantía">
+              <select value={modal.garantiaMoneda || 'UF'} onChange={set('garantiaMoneda')}>
+                <option value="UF">UF</option>
+                <option value="CLP">Pesos (CLP)</option>
+              </select>
+            </Field>
+            <Field label={(modal.garantiaMoneda || 'UF') === 'UF' ? 'Garantía (UF)' : 'Garantía (CLP)'}>
+              <input type="number" step="any" value={modal.garantia} onChange={set('garantia')} />
             </Field>
           </div>
 

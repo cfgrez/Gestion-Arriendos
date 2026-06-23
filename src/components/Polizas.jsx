@@ -5,8 +5,15 @@ import { Modal, EmptyState, ConfirmDelete, Field, Badge } from './UI'
 import { nuevoId, fmtCLP, fmtFecha, diasEntre, hoyISO } from '../utils/helpers'
 
 const vacio = {
-  compania: '', numero: '', rolId: '', inicio: '', termino: '',
+  compania: '', numero: '', rolIds: [], inicio: '', termino: '',
   prima: '', pdfId: null, pdfNombre: '', notas: '',
+}
+
+// Compatibilidad: pólizas antiguas guardaban un único rolId.
+function rolesDePoliza(p) {
+  if (Array.isArray(p.rolIds)) return p.rolIds
+  if (p.rolId) return [p.rolId]
+  return []
 }
 
 export default function Polizas() {
@@ -26,14 +33,24 @@ export default function Polizas() {
 
   const guardarItem = async () => {
     if (!modal.compania?.trim()) return alert('Indica la compañía.')
+    const { rolId, ...resto } = modal
     await guardar(STORES.polizas, {
-      ...modal,
+      ...resto,
+      rolIds: modal.rolIds || [],
       prima: Number(modal.prima) || 0,
       id: modal.id || nuevoId(),
     })
     setModal(null)
   }
   const set = (k) => (e) => setModal((m) => ({ ...m, [k]: e.target.value }))
+
+  const toggleRol = (rolId) => {
+    setModal((m) => {
+      const actuales = m.rolIds || []
+      const tiene = actuales.includes(rolId)
+      return { ...m, rolIds: tiene ? actuales.filter((r) => r !== rolId) : [...actuales, rolId] }
+    })
+  }
 
   const subirPDF = async (e) => {
     const f = e.target.files?.[0]
@@ -90,7 +107,11 @@ export default function Polizas() {
                 <tr key={p.id}>
                   <td className="strong">{p.compania}</td>
                   <td>{p.numero || '—'}</td>
-                  <td>{p.rolId ? rolTexto(p.rolId) : 'General'}</td>
+                  <td>
+                    {rolesDePoliza(p).length === 0
+                      ? 'General'
+                      : rolesDePoliza(p).map((r) => <div key={r}>{rolTexto(r)}</div>)}
+                  </td>
                   <td>{fmtFecha(p.inicio)} → {fmtFecha(p.termino)}</td>
                   <td className="num">{fmtCLP(p.prima)}</td>
                   <td>{estado(p)}</td>
@@ -104,7 +125,7 @@ export default function Polizas() {
                     )}
                   </td>
                   <td className="actions">
-                    <button className="icon-btn" onClick={() => setModal({ ...p })} title="Editar">
+                    <button className="icon-btn" onClick={() => setModal({ ...p, rolIds: rolesDePoliza(p) })} title="Editar">
                       <Icon.Edit />
                     </button>
                     <button className="icon-btn danger" onClick={() => setBorrar(p)} title="Eliminar">
@@ -131,13 +152,25 @@ export default function Polizas() {
             <Field label="N° de póliza">
               <input value={modal.numero} onChange={set('numero')} />
             </Field>
-            <Field label="Propiedad asociada" full>
-              <select value={modal.rolId} onChange={set('rolId')}>
-                <option value="">General / sin asociar</option>
-                {propiedades.map((p) => (
-                  <option key={p.id} value={p.id}>{p.rol} · {p.direccion}</option>
-                ))}
-              </select>
+            <Field label="Propiedades asociadas (roles)" full hint="Marca una o varias. Sin marcar = póliza general.">
+              <div className="rol-picker">
+                {propiedades.length === 0 && <p className="muted">No hay propiedades.</p>}
+                {propiedades.map((p) => {
+                  const seleccionado = (modal.rolIds || []).includes(p.id)
+                  return (
+                    <label key={p.id} className={'rol-opt' + (seleccionado ? ' on' : '')}>
+                      <input
+                        type="checkbox"
+                        checked={seleccionado}
+                        onChange={() => toggleRol(p.id)}
+                      />
+                      <span>
+                        <strong>{p.rol}</strong> {p.direccion}
+                      </span>
+                    </label>
+                  )
+                })}
+              </div>
             </Field>
             <Field label="Inicio">
               <input type="date" value={modal.inicio} onChange={set('inicio')} />

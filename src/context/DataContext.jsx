@@ -17,6 +17,7 @@ const STORES_DATOS = [
   'arrendatarios',
   'contratos',
   'polizas',
+  'compraventas',
   'ingresos',
   'gastos',
 ]
@@ -27,6 +28,7 @@ export function DataProvider({ children }) {
   const [arrendatarios, setArrendatarios] = useState([])
   const [contratos, setContratos] = useState([])
   const [polizas, setPolizas] = useState([])
+  const [compraventas, setCompraventas] = useState([])
   const [ingresos, setIngresos] = useState([])
   const [gastos, setGastos] = useState([])
   const [avisoDias, setAvisoDias] = useState(60)
@@ -37,6 +39,7 @@ export function DataProvider({ children }) {
     arrendatarios: setArrendatarios,
     contratos: setContratos,
     polizas: setPolizas,
+    compraventas: setCompraventas,
     ingresos: setIngresos,
     gastos: setGastos,
   }
@@ -49,13 +52,14 @@ export function DataProvider({ children }) {
   useEffect(() => {
     ;(async () => {
       try {
-        const [pr, ar, co, po, ing, ga] = await Promise.all(
+        const [pr, ar, co, po, cv, ing, ga] = await Promise.all(
           STORES_DATOS.map((s) => DB.getAll(s)),
         )
         setPropiedades(pr)
         setArrendatarios(ar)
         setContratos(co)
         setPolizas(po)
+        setCompraventas(cv)
         setIngresos(ing)
         setGastos(ga)
         const dias = await DB.getConfig('avisoDias', 60)
@@ -201,6 +205,7 @@ export function DataProvider({ children }) {
     arrendatarios,
     contratos,
     polizas,
+    compraventas,
     ingresos,
     gastos,
     avisoDias,
