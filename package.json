@@ -1,0 +1,20 @@
+{
+  "name": "gestion-arriendos",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Aplicación web para la gestión de propiedades en arriendo (roles, contratos, pólizas, ingresos y morosidad).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
