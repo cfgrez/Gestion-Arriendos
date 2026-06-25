@@ -5,7 +5,7 @@ import { Modal, EmptyState, ConfirmDelete, Field, Badge } from './UI'
 import { fmtCLP, nuevoId } from '../utils/helpers'
 
 const vacio = {
-  rol: '', direccion: '', comuna: '', grupo: '', encargado: '',
+  rol: '', direccion: '', comuna: '', grupo: '', Propietario: '',
   avaluo: '', contribucionAnual: '', destino: 'Habitacional', notas: '',
 }
 
@@ -31,7 +31,7 @@ export default function Propiedades() {
           p.rol?.toLowerCase().includes(q) ||
           p.direccion?.toLowerCase().includes(q) ||
           p.comuna?.toLowerCase().includes(q) ||
-          p.encargado?.toLowerCase().includes(q),
+          p.Propietario?.toLowerCase().includes(q),
       )
       .sort((a, b) => (a.rol || '').localeCompare(b.rol || ''))
   }, [propiedades, busqueda, grupoFiltro])
@@ -61,7 +61,7 @@ export default function Propiedades() {
       <div className="page-head">
         <div>
           <h1 className="page-title">Propiedades y Roles</h1>
-          <p className="page-desc">Direcciones, roles del SII, encargados, avalúo y contribuciones.</p>
+          <p className="page-desc">Direcciones, roles del SII, Propietarios, avalúo y contribuciones.</p>
         </div>
         <button className="btn btn-primary" onClick={() => setModal({ ...vacio })}>
           <Icon.Plus /> Nueva propiedad
@@ -72,7 +72,7 @@ export default function Propiedades() {
         <div className="search grow">
           <Icon.Search />
           <input
-            placeholder="Buscar por rol, dirección, comuna o encargado…"
+            placeholder="Buscar por rol, dirección, comuna o Propietario…"
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
           />
@@ -116,7 +116,7 @@ export default function Propiedades() {
                 <th>Dirección</th>
                 <th>Comuna</th>
                 <th>Grupo</th>
-                <th>Encargado</th>
+                <th>Propietario</th>
                 <th className="num">Contribución anual</th>
                 <th>Estado</th>
                 <th></th>
@@ -131,7 +131,7 @@ export default function Propiedades() {
                     <td>{p.direccion || '—'}</td>
                     <td>{p.comuna || '—'}</td>
                     <td>{p.grupo ? <Badge>{p.grupo}</Badge> : '—'}</td>
-                    <td>{p.encargado || '—'}</td>
+                    <td>{p.Propietario || '—'}</td>
                     <td className="num">{fmtCLP(p.contribucionAnual)}</td>
                     <td>
                       {cv ? <Badge tipo="ok">Arrendada</Badge> : <Badge tipo="muted">Disponible</Badge>}
@@ -175,8 +175,8 @@ export default function Propiedades() {
             <Field label="Comuna">
               <input value={modal.comuna} onChange={set('comuna')} />
             </Field>
-            <Field label="Encargado">
-              <input value={modal.encargado} onChange={set('encargado')} />
+            <Field label="Propietario">
+              <input value={modal.Propietario} onChange={set('Propietario')} />
             </Field>
             <Field label="Avalúo fiscal (CLP)">
               <input type="number" value={modal.avaluo} onChange={set('avaluo')} />
